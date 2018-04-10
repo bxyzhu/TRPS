@@ -31,22 +31,22 @@ TRPSPhysicsList::~TRPSPhysicsList() {;}
 void TRPSPhysicsList::ConstructParticle() {
   G4BosonConstructor pBoConstructor;
   pBoConstructor.ConstructParticle();
-  
+
   G4LeptonConstructor pLConstructor;
   pLConstructor.ConstructParticle();
-  
+
   G4MesonConstructor pMConstructor;
   pMConstructor.ConstructParticle();
-  
+
   G4BaryonConstructor pBaConstructor;
   pBaConstructor.ConstructParticle();
-  
+
   G4IonConstructor pIConstructor;
   pIConstructor.ConstructParticle();
-  
+
   G4ShortLivedConstructor pSConstructor;
-  pSConstructor.ConstructParticle(); 
-	
+  pSConstructor.ConstructParticle();
+
   G4PhononLong::PhononDefinition();
   G4PhononTransFast::PhononDefinition();
   G4PhononTransSlow::PhononDefinition();
@@ -92,8 +92,8 @@ void TRPSPhysicsList::ConstructEM(){
   //Only make processes once
   G4VPhysicsConstructor* phEMS = new G4EmStandardPhysics_option3();
   phEMS->ConstructProcess();
-  
-  /* 
+
+  /*
   theParticleIterator->reset();
   while( (*theParticleIterator)() ){
     G4ParticleDefinition* particle = theParticleIterator->value();
@@ -132,7 +132,8 @@ void TRPSPhysicsList::ConstructEM(){
 #include "G4PhononScattering.hh"
 
 void TRPSPhysicsList::ConstructThermalization(){
-  
+  auto theParticleIterator = GetParticleIterator();
+
   theParticleIterator->reset();
   while( (*theParticleIterator)() ){
     G4ParticleDefinition* particle = theParticleIterator->value();
@@ -157,27 +158,27 @@ void TRPSPhysicsList::ConstructThermalization(){
       pmanager->AddDiscreteProcess(new PhononExcitation());
     }
   }
-  
+
   //G4VProcess* anDec = new AnharmonicDecay();
-  G4VProcess* phScat = new G4PhononScattering;
-  G4VProcess* phRefl = new G4PhononReflection;
-  G4VProcess* phDown = new G4PhononDownconversion;
+  // G4VProcess* phScat = new G4PhononScattering;
+  // G4VProcess* phRefl = new G4PhononReflection;
+  // G4VProcess* phDown = new G4PhononDownconversion;
 
   // Set process verbosity to match physics list, for diagnostics
   //phScat->SetVerboseLevel(verboseLevel);
   //phRefl->SetVerboseLevel(verboseLevel);
   //phDown->SetVerboseLevel(verboseLevel);
-  
+
   theParticleIterator->reset();
   while( (*theParticleIterator)() ){
     G4ParticleDefinition* particle = theParticleIterator->value();
     G4ProcessManager* pmanager = particle->GetProcessManager();
 
-    if (phScat->IsApplicable(*particle)) pmanager->AddDiscreteProcess(phScat);
+    // if (phScat->IsApplicable(*particle)) pmanager->AddDiscreteProcess(phScat);
     //Uncomment line below and comment out the following line to enable default downconversion process
-    if (phDown->IsApplicable(*particle)) pmanager->AddDiscreteProcess(phDown);
+    // if (phDown->IsApplicable(*particle)) pmanager->AddDiscreteProcess(phDown);
     //if (phDown->IsApplicable(*particle)) pmanager->AddDiscreteProcess(anDec);
-    if (phRefl->IsApplicable(*particle)) pmanager->AddDiscreteProcess(phRefl);
+    // if (phRefl->IsApplicable(*particle)) pmanager->AddDiscreteProcess(phRefl);
   }
 }
 
@@ -186,4 +187,3 @@ void TRPSPhysicsList::SetCuts() {
   // for the world volume.
   SetCutsWithDefault();
 }
-
